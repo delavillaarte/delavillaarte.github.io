@@ -47,15 +47,25 @@
         }
         .btn-contacto:hover { background: #000; color: #fff; }
 
-        /* --- 4. CONTENIDO Y GALERÍA --- */
-        .container { max-width: 1100px; margin: 60px auto; padding: 0 20px; }
+        /* --- 4. CONTENIDO Y GALERÍA (AJUSTADO A UNA LÍNEA) --- */
+        .container { max-width: 1300px; margin: 60px auto; padding: 0 20px; }
         h2 { font-size: 1.4rem; margin-bottom: 30px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
 
         .grid-proyectos { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-            gap: 25px; margin-bottom: 20px;
+            /* FUERZA UNA SOLA FILA */
+            grid-auto-flow: column; 
+            grid-auto-columns: minmax(250px, 1fr); 
+            gap: 15px; 
+            margin-bottom: 20px;
+            /* Permite scroll si hay demasiadas fotos para la pantalla */
+            overflow-x: auto; 
+            padding-bottom: 10px;
         }
+
+        /* Estilo para la barra de scroll (opcional, para que sea minimalista) */
+        .grid-proyectos::-webkit-scrollbar { height: 4px; }
+        .grid-proyectos::-webkit-scrollbar-thumb { background: #333; }
 
         .img-box { 
             width: 100%; 
@@ -68,7 +78,7 @@
             transition: transform 0.4s ease;
             background-color: #eee;
         }
-        .img-box:hover { transform: scale(1.02); }
+        .img-box:hover { transform: scale(1.02); z-index: 5; }
 
         .ver-mas-container { text-align: right; margin-bottom: 100px; }
         .ver-mas { font-size: 0.8rem; color: #333; text-decoration: none; border-bottom: 1px solid #333; }
@@ -100,14 +110,9 @@
         .footer-content h3 { font-size: 1.2rem; margin-bottom: 25px; }
         
         .link-footer {
-            color: #000;
-            text-decoration: none;
-            font-weight: bold;
-            padding: 2px 4px;
-            transition: 0.3s;
+            color: #000; text-decoration: none; font-weight: bold; padding: 2px 4px; transition: 0.3s;
         }
         .link-footer:hover { background: #000; color: #fff; }
-
         .blink-text { animation: blink 1.5s step-end infinite; }
 
         .copyright { 
@@ -163,13 +168,9 @@
     <footer id="contacto">
         <div class="footer-content">
             <h3 class="blink-text">> INFO_CONTACTO.TXT</h3>
-            
             <p>EMAIL: <a href="mailto:tuemail@ejemplo.com" class="link-footer">tuemail@ejemplo.com</a></p>
-            
             <p>INSTAGRAM: <a href="https://instagram.com/tuusuario" target="_blank" class="link-footer">@tuusuario</a></p>
-            
             <p>UBICACIÓN: CIUDAD, PAÍS</p>
-            
             <span class="copyright">
                 © 2026 ARCHIVO PROYECTO. TODOS LOS DERECHOS RESERVADOS.<br>
                 SISTEMA DE PROTECCIÓN DE IMÁGENES ACTIVO.<br>
@@ -179,7 +180,6 @@
     </footer>
 
     <script>
-        // 1. Manejo del Loader
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const loader = document.getElementById('loader');
@@ -188,14 +188,12 @@
             }, 1200); 
         });
 
-        // 2. Sistema de Zoom Protegido
         const overlay = document.getElementById('overlay');
         const imgGrande = document.getElementById('img-grande');
         const boxes = document.querySelectorAll('.img-box');
 
         boxes.forEach(box => {
             box.addEventListener('click', () => {
-                // Extrae la URL limpia del background-image del CSS
                 const url = box.style.backgroundImage.slice(5, -2).replace(/"/g, "");
                 imgGrande.src = url;
                 overlay.style.display = 'flex';
@@ -208,11 +206,8 @@
             setTimeout(() => overlay.style.display = 'none', 300);
         });
 
-        // 3. Protecciones de Seguridad
-        document.addEventListener('contextmenu', e => e.preventDefault()); // Bloquea clic derecho
-        document.addEventListener('dragstart', e => e.preventDefault());    // Bloquea arrastre de fotos
-        
-        // Bloquea atajos de teclado para guardar o ver código
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('dragstart', e => e.preventDefault());
         document.addEventListener('keydown', e => {
             if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'u')) {
                 e.preventDefault();
