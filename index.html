@@ -19,7 +19,7 @@
             overflow-x: hidden;
         }
 
-        /* --- 2. PANTALLA DE CARGA (LOADING) --- */
+        /* --- 2. PANTALLA DE CARGA (LOADER) --- */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #fff; z-index: 3000;
@@ -31,11 +31,11 @@
         /* --- 3. HEADER Y LÍNEA DIVISORA --- */
         header { 
             display: flex; justify-content: space-between; align-items: center; 
-            padding: 12px 5%; /* Espacio reducido arriba/abajo */
+            padding: 12px 5%;
             background: #fff; 
             position: sticky; top: 0; z-index: 100; 
             border-bottom: 1px solid #333; 
-            box-shadow: 0 4px 0 -2px #fff, 0 5px 0 -2px #333; /* Línea doble técnica */
+            box-shadow: 0 4px 0 -2px #fff, 0 5px 0 -2px #333;
         }
         .brand { display: flex; flex-direction: column; }
         .logo { font-weight: bold; font-size: 1.6rem; color: #000; text-decoration: none; line-height: 1; }
@@ -47,7 +47,7 @@
         }
         .btn-contacto:hover { background: #000; color: #fff; }
 
-        /* --- 4. CONTENIDO Y GALERÍA (IMÁGENES OCULTAS) --- */
+        /* --- 4. CONTENIDO Y GALERÍA --- */
         .container { max-width: 1100px; margin: 60px auto; padding: 0 20px; }
         h2 { font-size: 1.4rem; margin-bottom: 30px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
 
@@ -84,9 +84,9 @@
         }
         #overlay.active #img-grande { transform: scale(1); }
 
-        /* --- 6. FOOTER (PANTALLA COMPLETA) --- */
+        /* --- 6. FOOTER DE CONTACTO --- */
         footer { 
-            min-height: 100vh; /* Ocupa toda la pantalla */
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center; 
@@ -97,14 +97,22 @@
             text-align: center;
         }
         .footer-content { width: 100%; max-width: 500px; }
-        .footer-content h3 { font-size: 1.2rem; margin-bottom: 20px; }
+        .footer-content h3 { font-size: 1.2rem; margin-bottom: 25px; }
         
-        /* Animación de parpadeo para el contacto */
+        .link-footer {
+            color: #000;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 2px 4px;
+            transition: 0.3s;
+        }
+        .link-footer:hover { background: #000; color: #fff; }
+
         .blink-text { animation: blink 1.5s step-end infinite; }
 
         .copyright { 
-            font-size: 0.7rem; color: #888; margin-top: 40px; display: block; 
-            border-top: 1px solid #ccc; padding-top: 20px; line-height: 1.5;
+            font-size: 0.7rem; color: #888; margin-top: 50px; display: block; 
+            border-top: 1px solid #ccc; padding-top: 25px; line-height: 1.6;
         }
     </style>
 </head>
@@ -117,7 +125,7 @@
     <header>
         <div class="brand">
             <a href="#" class="logo">_ARCHIVO_01</a>
-            <p class="subtitulo">Visual Archive / 2026</p>
+            <p class="subtitulo">Visual Archive / Portafolio 2026</p>
         </div>
         <a href="#contacto" class="btn-contacto">[ CONTACTO ]</a>
     </header>
@@ -153,18 +161,23 @@
     <footer id="contacto">
         <div class="footer-content">
             <h3 class="blink-text">> INFO_CONTACTO.TXT</h3>
-            <p>EMAIL: hola@tusitio.com</p>
-            <p>INSTAGRAM: @tuusuario</p>
+            
+            <p>EMAIL: <a href="mailto:tuemail@ejemplo.com" class="link-footer">tuemail@ejemplo.com</a></p>
+            
+            <p>INSTAGRAM: <a href="https://instagram.com/tuusuario" target="_blank" class="link-footer">@tuusuario</a></p>
+            
             <p>UBICACIÓN: CIUDAD, PAÍS</p>
+            
             <span class="copyright">
                 © 2026 ARCHIVO PROYECTO. TODOS LOS DERECHOS RESERVADOS.<br>
-                SISTEMA DE PROTECCIÓN ACTIVO / ACCESO RESTRINGIDO.
+                SISTEMA DE PROTECCIÓN DE IMÁGENES ACTIVO.<br>
+                ACCESO RESTRINGIDO.
             </span>
         </div>
     </footer>
 
     <script>
-        // 1. Loader: desaparece cuando la página carga
+        // 1. Manejo del Loader
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const loader = document.getElementById('loader');
@@ -173,13 +186,14 @@
             }, 1200); 
         });
 
-        // 2. Zoom de imágenes (extrae URL del fondo CSS)
+        // 2. Sistema de Zoom Protegido
         const overlay = document.getElementById('overlay');
         const imgGrande = document.getElementById('img-grande');
         const boxes = document.querySelectorAll('.img-box');
 
         boxes.forEach(box => {
             box.addEventListener('click', () => {
+                // Extrae la URL limpia del background-image del CSS
                 const url = box.style.backgroundImage.slice(5, -2).replace(/"/g, "");
                 imgGrande.src = url;
                 overlay.style.display = 'flex';
@@ -192,11 +206,11 @@
             setTimeout(() => overlay.style.display = 'none', 300);
         });
 
-        // 3. Seguridad Avanzada
-        document.addEventListener('contextmenu', e => e.preventDefault()); // No clic derecho
-        document.addEventListener('dragstart', e => e.preventDefault());    // No arrastrar
+        // 3. Protecciones de Seguridad
+        document.addEventListener('contextmenu', e => e.preventDefault()); // Bloquea clic derecho
+        document.addEventListener('dragstart', e => e.preventDefault());    // Bloquea arrastre de fotos
         
-        // No permitir Ctrl+S (Guardar) ni Ctrl+U (Ver código)
+        // Bloquea atajos de teclado para guardar o ver código
         document.addEventListener('keydown', e => {
             if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'u')) {
                 e.preventDefault();
