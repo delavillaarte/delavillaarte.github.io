@@ -8,8 +8,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
-        /* --- 1. RESET Y PROTECCIÓN TOTAL --- */
+        /* --- 1. BASE Y COMPORTAMIENTO --- */
+        html { scroll-behavior: smooth; }
         * { box-sizing: border-box; }
+        
         body { 
             font-family: 'Courier Prime', monospace; 
             margin: 0; background: #fdfdfd; color: #1a1a1a;
@@ -22,20 +24,22 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #fff; z-index: 3000;
             display: flex; justify-content: center; align-items: center;
-            flex-direction: column;
         }
         .cursor { display: inline-block; width: 10px; height: 1.2rem; background: #000; margin-left: 5px; animation: blink 0.8s infinite; }
         @keyframes blink { 50% { opacity: 0; } }
 
-        /* --- 3. HEADER --- */
+        /* --- 3. HEADER Y LÍNEA DIVISORA --- */
         header { 
             display: flex; justify-content: space-between; align-items: center; 
-            padding: 20px 5%; border-bottom: 2px solid #333; background: #fff; 
+            padding: 12px 5%; /* Espacio reducido arriba/abajo */
+            background: #fff; 
             position: sticky; top: 0; z-index: 100; 
+            border-bottom: 1px solid #333; 
+            box-shadow: 0 4px 0 -2px #fff, 0 5px 0 -2px #333; /* Línea doble técnica */
         }
         .brand { display: flex; flex-direction: column; }
         .logo { font-weight: bold; font-size: 1.6rem; color: #000; text-decoration: none; line-height: 1; }
-        .subtitulo { font-size: 0.75rem; margin-top: 8px; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+        .subtitulo { font-size: 0.7rem; margin-top: 4px; color: #666; text-transform: uppercase; letter-spacing: 1px; }
 
         .btn-contacto { 
             font-size: 1rem; color: #000; text-decoration: none; font-weight: bold;
@@ -43,19 +47,19 @@
         }
         .btn-contacto:hover { background: #000; color: #fff; }
 
-        /* --- 4. CUADRÍCULA DE PROYECTOS (FONDOS CSS) --- */
-        .container { max-width: 1100px; margin: 50px auto; padding: 0 20px; }
+        /* --- 4. CONTENIDO Y GALERÍA (IMÁGENES OCULTAS) --- */
+        .container { max-width: 1100px; margin: 60px auto; padding: 0 20px; }
         h2 { font-size: 1.4rem; margin-bottom: 30px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
 
         .grid-proyectos { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
             gap: 25px; margin-bottom: 20px;
         }
 
         .img-box { 
             width: 100%; 
-            height: 350px; 
+            height: 400px; 
             background-size: cover; 
             background-position: center;
             background-repeat: no-repeat;
@@ -63,28 +67,45 @@
             cursor: zoom-in;
             transition: transform 0.4s ease;
             background-color: #eee;
-            -webkit-user-drag: none;
         }
         .img-box:hover { transform: scale(1.02); }
 
-        .ver-mas-container { text-align: right; margin-bottom: 80px; }
-        .ver-mas { font-size: 0.9rem; color: #333; text-decoration: none; border-bottom: 1px solid #333; padding-bottom: 2px; }
+        .ver-mas-container { text-align: right; margin-bottom: 100px; }
+        .ver-mas { font-size: 0.8rem; color: #333; text-decoration: none; border-bottom: 1px solid #333; }
 
-        /* --- 5. OVERLAY ZOOM (PROTEGIDO) --- */
+        /* --- 5. OVERLAY ZOOM --- */
         #overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.95); z-index: 2000; justify-content: center; align-items: center; cursor: zoom-out;
         }
         #img-grande { 
             max-width: 90%; max-height: 85%; transform: scale(0.9); transition: 0.3s; 
-            pointer-events: none; /* Nadie puede interactuar con la imagen abierta */
-            -webkit-user-drag: none;
+            pointer-events: none; -webkit-user-drag: none;
         }
         #overlay.active #img-grande { transform: scale(1); }
 
-        /* --- 6. FOOTER --- */
-        footer { text-align: center; padding: 80px 20px; background: #f4f4f4; border-top: 2px solid #333; }
-        .copyright { font-size: 0.75rem; color: #777; margin-top: 20px; display: block; border-top: 1px solid #ccc; padding-top: 20px; }
+        /* --- 6. FOOTER (PANTALLA COMPLETA) --- */
+        footer { 
+            min-height: 100vh; /* Ocupa toda la pantalla */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;
+            padding: 40px 20px; 
+            background: #f4f4f4; 
+            border-top: 2px solid #333; 
+            text-align: center;
+        }
+        .footer-content { width: 100%; max-width: 500px; }
+        .footer-content h3 { font-size: 1.2rem; margin-bottom: 20px; }
+        
+        /* Animación de parpadeo para el contacto */
+        .blink-text { animation: blink 1.5s step-end infinite; }
+
+        .copyright { 
+            font-size: 0.7rem; color: #888; margin-top: 40px; display: block; 
+            border-top: 1px solid #ccc; padding-top: 20px; line-height: 1.5;
+        }
     </style>
 </head>
 <body>
@@ -96,7 +117,7 @@
     <header>
         <div class="brand">
             <a href="#" class="logo">_ARCHIVO_01</a>
-            <p class="subtitulo">Visual Archive / Portafolio 2026</p>
+            <p class="subtitulo">Visual Archive / 2026</p>
         </div>
         <a href="#contacto" class="btn-contacto">[ CONTACTO ]</a>
     </header>
@@ -106,10 +127,9 @@
         <section>
             <h2>> PROYECTO_ALPHA</h2>
             <div class="grid-proyectos">
-                <div class="img-box" style="background-image: url('https://picsum.photos/800/1100?random=1');"></div>
-                <div class="img-box" style="background-image: url('https://picsum.photos/800/1100?random=2');"></div>
-                <div class="img-box" style="background-image: url('https://picsum.photos/800/1100?random=3');"></div>
-                <div class="img-box" style="background-image: url('https://picsum.photos/800/1100?random=4');"></div>
+                <div class="img-box" style="background-image: url('https://picsum.photos/800/1200?random=1');"></div>
+                <div class="img-box" style="background-image: url('https://picsum.photos/800/1200?random=2');"></div>
+                <div class="img-box" style="background-image: url('https://picsum.photos/800/1200?random=3');"></div>
             </div>
             <div class="ver-mas-container"><a href="#" class="ver-mas">_VER_MÁS_TRABAJOS</a></div>
         </section>
@@ -117,10 +137,9 @@
         <section>
             <h2>> PROYECTO_BETA</h2>
             <div class="grid-proyectos">
-                <div class="img-box" style="background-image: url('https://picsum.photos/800/1100?random=5');"></div>
-                <div class="img-box" style="background-image: url('https://picsum.photos/800/1100?random=6');"></div>
-                <div class="img-box" style="background-image: url('https://picsum.photos/800/1100?random=7');"></div>
-                <div class="img-box" style="background-image: url('https://picsum.photos/800/1100?random=8');"></div>
+                <div class="img-box" style="background-image: url('https://picsum.photos/800/1200?random=4');"></div>
+                <div class="img-box" style="background-image: url('https://picsum.photos/800/1200?random=5');"></div>
+                <div class="img-box" style="background-image: url('https://picsum.photos/800/1200?random=6');"></div>
             </div>
             <div class="ver-mas-container"><a href="#" class="ver-mas">_VER_MÁS_TRABAJOS</a></div>
         </section>
@@ -132,26 +151,29 @@
     </div>
 
     <footer id="contacto">
-        <h3>INFO_CONTACTO.TXT</h3>
-        <p>EMAIL: hola@tusitio.com</p>
-        <p>INSTAGRAM: @tuusuario</p>
-        <span class="copyright">
-            © 2026 ARCHIVO PROYECTO. TODOS LOS DERECHOS RESERVADOS.<br>
-            SISTEMA DE PROTECCIÓN DE IMÁGENES ACTIVO.
-        </span>
+        <div class="footer-content">
+            <h3 class="blink-text">> INFO_CONTACTO.TXT</h3>
+            <p>EMAIL: hola@tusitio.com</p>
+            <p>INSTAGRAM: @tuusuario</p>
+            <p>UBICACIÓN: CIUDAD, PAÍS</p>
+            <span class="copyright">
+                © 2026 ARCHIVO PROYECTO. TODOS LOS DERECHOS RESERVADOS.<br>
+                SISTEMA DE PROTECCIÓN ACTIVO / ACCESO RESTRINGIDO.
+            </span>
+        </div>
     </footer>
 
     <script>
-        // 1. Efecto de Carga (Loader)
+        // 1. Loader: desaparece cuando la página carga
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const loader = document.getElementById('loader');
                 loader.style.opacity = '0';
                 setTimeout(() => loader.style.display = 'none', 500);
-            }, 1500); // Se muestra durante 1.5 segundos
+            }, 1200); 
         });
 
-        // 2. Funcionalidad de Zoom
+        // 2. Zoom de imágenes (extrae URL del fondo CSS)
         const overlay = document.getElementById('overlay');
         const imgGrande = document.getElementById('img-grande');
         const boxes = document.querySelectorAll('.img-box');
@@ -170,11 +192,11 @@
             setTimeout(() => overlay.style.display = 'none', 300);
         });
 
-        // 3. Bloqueos de Seguridad
-        document.addEventListener('contextmenu', e => e.preventDefault()); // Clic derecho
-        document.addEventListener('dragstart', e => e.preventDefault());    // Arrastre
+        // 3. Seguridad Avanzada
+        document.addEventListener('contextmenu', e => e.preventDefault()); // No clic derecho
+        document.addEventListener('dragstart', e => e.preventDefault());    // No arrastrar
         
-        // Evita Ctrl+S y Ctrl+U
+        // No permitir Ctrl+S (Guardar) ni Ctrl+U (Ver código)
         document.addEventListener('keydown', e => {
             if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'u')) {
                 e.preventDefault();
