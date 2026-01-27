@@ -3,216 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archivo de Proyectos | v1.0</title>
+    <title>DELAVILLAARTE</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
-        /* --- 1. BASE Y COMPORTAMIENTO --- */
+        /* --- 1. BASE Y SEGURIDAD --- */
         html { scroll-behavior: smooth; }
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body { 
             font-family: 'Courier Prime', monospace; 
-            margin: 0; background: #fdfdfd; color: #1a1a1a;
+            background: #fdfdfd; color: #1a1a1a;
             user-select: none; -webkit-user-select: none;
             overflow-x: hidden;
+            transition: filter 0.3s ease;
         }
 
-        /* --- 2. PANTALLA DE CARGA (LOADER) --- */
-        #loader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #fff; z-index: 3000;
-            display: flex; justify-content: center; align-items: center;
-        }
-        .cursor { display: inline-block; width: 10px; height: 1.2rem; background: #000; margin-left: 5px; animation: blink 0.8s infinite; }
-        @keyframes blink { 50% { opacity: 0; } }
+        /* Desenfoque de seguridad al perder foco */
+        body.security-blur { filter: blur(20px); }
 
-        /* --- 3. HEADER Y LÍNEA DIVISORA --- */
+        /* --- 2. HEADER --- */
         header { 
             display: flex; justify-content: space-between; align-items: center; 
-            padding: 12px 5%;
-            background: #fff; 
-            position: sticky; top: 0; z-index: 100; 
-            border-bottom: 1px solid #333; 
-            box-shadow: 0 4px 0 -2px #fff, 0 5px 0 -2px #333;
+            padding: 12px 5%; background: #fff; position: sticky; top: 0; z-index: 100; 
+            border-bottom: 1px solid #333; box-shadow: 0 4px 0 -2px #fff, 0 5px 0 -2px #333;
         }
-        .brand { display: flex; flex-direction: column; }
-        .logo { font-weight: bold; font-size: 1.6rem; color: #000; text-decoration: none; line-height: 1; }
-        .subtitulo { font-size: 0.7rem; margin-top: 4px; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+        .logo { font-weight: bold; font-size: 1.5rem; color: #000; text-decoration: none; }
+        .btn-contacto { font-size: 0.9rem; color: #000; text-decoration: none; font-weight: bold; border: 1px solid #333; padding: 5px 10px; }
 
-        .btn-contacto { 
-            font-size: 1rem; color: #000; text-decoration: none; font-weight: bold;
-            padding: 8px 12px; transition: 0.2s;
-        }
-        .btn-contacto:hover { background: #000; color: #fff; }
-
-        /* --- 4. CONTENIDO Y GALERÍA (AJUSTADO A UNA LÍNEA) --- */
-        .container { max-width: 1300px; margin: 60px auto; padding: 0 20px; }
-        h2 { font-size: 1.4rem; margin-bottom: 30px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+        /* --- 3. GRID RESPONSIVE (Escritorio: 4 columnas | Móvil: 1 columna) --- */
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        h2 { font-size: 1.2rem; margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 8px; }
 
         .grid-proyectos { 
             display: grid; 
-            /* FUERZA UNA SOLA FILA */
-            grid-auto-flow: column; 
-            grid-auto-columns: minmax(250px, 1fr); 
+            grid-template-columns: repeat(4, 1fr); /* 4 imágenes exactas en escritorio */
             gap: 15px; 
-            margin-bottom: 20px;
-            /* Permite scroll si hay demasiadas fotos para la pantalla */
-            overflow-x: auto; 
-            padding-bottom: 10px;
+            margin-bottom: 60px;
         }
-
-        /* Estilo para la barra de scroll (opcional, para que sea minimalista) */
-        .grid-proyectos::-webkit-scrollbar { height: 4px; }
-        .grid-proyectos::-webkit-scrollbar-thumb { background: #333; }
 
         .img-box { 
-            width: 100%; 
-            height: 400px; 
-            background-size: cover; 
-            background-position: center;
-            background-repeat: no-repeat;
-            border: 1px solid #333;
-            cursor: zoom-in;
-            transition: transform 0.4s ease;
+            width: 100%; height: 350px; 
+            background-size: cover; background-position: center;
+            border: 1px solid #333; cursor: zoom-in; transition: 0.3s;
             background-color: #eee;
         }
-        .img-box:hover { transform: scale(1.02); z-index: 5; }
+        .img-box:hover { transform: scale(1.02); }
 
-        .ver-mas-container { text-align: right; margin-bottom: 100px; }
-        .ver-mas { font-size: 0.8rem; color: #333; text-decoration: none; border-bottom: 1px solid #333; }
+        /* AJUSTE PARA MÓVIL */
+        @media (max-width: 768px) {
+            .grid-proyectos {
+                grid-template-columns: 1fr; /* Una sola imagen por fila */
+            }
+            .img-box { height: 400px; } /* Un poco más altas en móvil */
+        }
 
-        /* --- 5. OVERLAY ZOOM --- */
+        /* --- 4. ZOOM --- */
         #overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.95); z-index: 2000; justify-content: center; align-items: center; cursor: zoom-out;
+            display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.98); 
+            z-index: 2000; justify-content: center; align-items: center; cursor: zoom-out;
         }
-        #img-grande { 
-            max-width: 90%; max-height: 85%; transform: scale(0.9); transition: 0.3s; 
-            pointer-events: none; -webkit-user-drag: none;
-        }
-        #overlay.active #img-grande { transform: scale(1); }
+        #img-grande { max-width: 90%; max-height: 85%; pointer-events: none; }
 
-        /* --- 6. FOOTER DE CONTACTO --- */
+        /* --- 5. FOOTER --- */
         footer { 
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center; 
-            align-items: center;
-            padding: 40px 20px; 
-            background: #f4f4f4; 
-            border-top: 2px solid #333; 
-            text-align: center;
+            min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 40px 20px; background: #f4f4f4; border-top: 2px solid #333; text-align: center;
         }
-        .footer-content { width: 100%; max-width: 500px; }
-        .footer-content h3 { font-size: 1.2rem; margin-bottom: 25px; }
-        
-        .link-footer {
-            color: #000; text-decoration: none; font-weight: bold; padding: 2px 4px; transition: 0.3s;
-        }
+        .link-footer { color: #000; font-weight: bold; text-decoration: none; padding: 2px 5px; }
         .link-footer:hover { background: #000; color: #fff; }
-        .blink-text { animation: blink 1.5s step-end infinite; }
-
-        .copyright { 
-            font-size: 0.7rem; color: #888; margin-top: 50px; display: block; 
-            border-top: 1px solid #ccc; padding-top: 25px; line-height: 1.6;
-        }
+        .copyright { font-size: 0.7rem; color: #888; margin-top: 40px; border-top: 1px solid #ccc; padding-top: 20px; }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <p>> ACCEDIENDO AL SISTEMA...<span class="cursor"></span></p>
-    </div>
-
     <header>
-        <div class="brand">
-            <a href="#" class="logo">_ARCHIVO_01</a>
-            <p class="subtitulo">Visual Archive / Portafolio 2026</p>
-        </div>
-        <a href="#contacto" class="btn-contacto">[ CONTACTO ]</a>
+        <a href="#" class="logo">_DELAVILLAARTE</a>
+        <a href="#contacto" class="btn-contacto">[CONTACTO]</a>
     </header>
 
     <main class="container">
         
         <section>
-            <h2>> PROYECTO_ALPHA</h2>
+            <h2>> GATOS_MADRID</h2>
             <div class="grid-proyectos">
-                <div class="img-box" style="background-image: url('https://picsum.photos/800/1200?random=1');"></div>
-                <div class="img-box" style="background-image: url('https://picsum.photos/800/1200?random=2');"></div>
-                <div class="img-box" style="background-image: url('https://picsum.photos/800/1200?random=3');"></div>
-                <div class="img-box" style="background-image: url('https://picsum.photos/800/1200?random=4');"></div>
+                <div class="img-box" style="background-image: url('https://i.postimg.cc/kGhZG16h/CASTAÑUELA_MARCO.png');"></div>
+                <div class="img-box" style="background-image: url('https://i.postimg.cc/GtSNt78N/CHULAPA_MARCO1.png');"></div>
+                <div class="img-box" style="background-image: url('https://i.postimg.cc/Rhb8hs6Y/CHULAPO_MARCO.png');"></div>
+                <div class="img-box" style="background-image: url('https://i.postimg.cc/2yXJycb9/CHURRO_MARCO.png');"></div>
             </div>
-            <div class="ver-mas-container"><a href="#" class="ver-mas">_VER_MÁS_TRABAJOS</a></div>
         </section>
 
         <section>
-            <h2>> PROYECTO_BETA</h2>
+            <h2>> TOROS_AZULEJO</h2>
             <div class="grid-proyectos">
-                <div class="img-box" style="background-image: url('https://drive.google.com/file/d/1lUivbmVl5ux2rnCwUh1kyYhlGU4EGhqs/view');"></div>
-                <div class="img-box" style="background-image: url('https://drive.google.com/file/d/1QLX2qpruI8Qpsmh0R4xjlTEJG0MN01aL/view');"></div>
-                <div class="img-box" style="background-image: url('https://drive.google.com/file/d/1FecgpetfFtzo1k5r1MdsQLvjfrzaIoyW/view');"></div>
-                <div class="img-box" style="background-image: url('https://drive.google.com/file/d/1gsaN14ul8y_CxDRL9Ezv06dlNTuz32yY/view');"></div>
+                <div class="img-box" style="background-image: url('https://i.postimg.cc/3R8bB526/1_FINAL.png');"></div>
+                <div class="img-box" style="background-image: url('https://i.postimg.cc/d1sSBPGx/2_FINAL.png');"></div>
+                <div class="img-box" style="background-image: url('https://i.postimg.cc/xCfFRDLF/3_FINAL.png');"></div>
+                <div class="img-box" style="background-image: url('https://i.postimg.cc/Qt8nbGcv/4_FINAL.png');"></div>
             </div>
-            <div class="ver-mas-container"><a href="#" class="ver-mas">_VER_MÁS_TRABAJOS</a></div>
         </section>
 
     </main>
 
-    <div id="overlay">
-        <img src="" id="img-grande">
-    </div>
+    <div id="overlay"><img src="" id="img-grande"></div>
 
     <footer id="contacto">
-        <div class="footer-content">
-            <h3 class="blink-text">> INFO_CONTACTO.TXT</h3>
-            <p>EMAIL: <a href="mailto:tuemail@ejemplo.com" class="link-footer">tuemail@ejemplo.com</a></p>
-            <p>INSTAGRAM: <a href="https://instagram.com/tuusuario" target="_blank" class="link-footer">@tuusuario</a></p>
-            <p>UBICACIÓN: CIUDAD, PAÍS</p>
-            <span class="copyright">
-                © 2026 ARCHIVO PROYECTO. TODOS LOS DERECHOS RESERVADOS.<br>
-                SISTEMA DE PROTECCIÓN DE IMÁGENES ACTIVO.<br>
-                ACCESO RESTRINGIDO.
-            </span>
+        <h3 style="margin-bottom:20px;">> CONTACTO_PERSONAL.TXT</h3>
+        <p>EMAIL: <a href="mailto:delavillaarte@gmail.com" class="link-footer">delavillaarte@gmail.com</a></p>
+        <p>INSTAGRAM: <a href="#" class="link-footer">@delavillaarte</a></p>
+        <div class="copyright">
+            © 2026 DELAVILLAARTE. PROTECCIÓN DE IMÁGENES ACTIVA.
         </div>
     </footer>
 
     <script>
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const loader = document.getElementById('loader');
-                loader.style.opacity = '0';
-                setTimeout(() => loader.style.display = 'none', 500);
-            }, 1200); 
-        });
-
+        // Zoom
         const overlay = document.getElementById('overlay');
         const imgGrande = document.getElementById('img-grande');
-        const boxes = document.querySelectorAll('.img-box');
 
-        boxes.forEach(box => {
-            box.addEventListener('click', () => {
-                const url = box.style.backgroundImage.slice(5, -2).replace(/"/g, "");
+        document.querySelectorAll('.img-box').forEach(box => {
+            box.onclick = () => {
+                const url = box.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/, '$1');
                 imgGrande.src = url;
                 overlay.style.display = 'flex';
-                setTimeout(() => overlay.classList.add('active'), 10);
-            });
+            };
         });
+        overlay.onclick = () => overlay.style.display = 'none';
 
-        overlay.addEventListener('click', () => {
-            overlay.classList.remove('active');
-            setTimeout(() => overlay.style.display = 'none', 300);
-        });
+        // Seguridad: Blur al salir de la pestaña
+        window.onblur = () => document.body.classList.add('security-blur');
+        window.onfocus = () => document.body.classList.remove('security-blur');
 
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('dragstart', e => e.preventDefault());
-        document.addEventListener('keydown', e => {
-            if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'u')) {
-                e.preventDefault();
-            }
-        });
+        // Bloqueos
+        document.oncontextmenu = e => e.preventDefault();
+        document.onkeydown = e => {
+            if ((e.ctrlKey || e.metaKey) && ['s', 'u', 'p', 'c'].includes(e.key.toLowerCase())) e.preventDefault();
+        };
     </script>
 </body>
 </html>
